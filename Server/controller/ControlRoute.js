@@ -1,4 +1,5 @@
 const People = require("../Models/user");
+const bcrypt = require("bcrypt");
 
 const Basic = (req, res) => {
   return res.json({
@@ -9,6 +10,7 @@ const Basic = (req, res) => {
 const Create = async (req, res) => {
   try {
     const { name, email, password } = req.body;
+    const hash = await bcrypt.hash(password, 13);
 
     //Check If the Name is there Or not
     if (!name) {
@@ -31,7 +33,7 @@ const Create = async (req, res) => {
     const user = await People.create({
       name,
       email,
-      password,
+      password: hash,
     });
     return res.json(user);
   } catch (error) {
@@ -39,4 +41,25 @@ const Create = async (req, res) => {
   }
 };
 
-module.exports = { Basic, Create };
+//login
+const login = async (req, res) => {
+  const { email, password } = req.body;
+  const user = await People.findOne({ email });
+  if (!user) {
+    return res.json({
+      error: "Gandu email",
+    });
+  }
+  const hash = user.password;
+  const isValid = await bcrypt.compare(password, hash);
+  if (!isValid) {
+    return res.json({
+      error: "gandu Password",
+    });
+  }
+  return res.json({
+    Message: "login Successafjcn",
+  });
+};
+
+module.exports = { Basic, Create, login };

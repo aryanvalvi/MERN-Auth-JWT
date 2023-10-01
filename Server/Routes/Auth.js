@@ -1,6 +1,6 @@
 const express = require("express");
 const routes = express.Router();
-const { Basic, Create } = require("../controller/ControlRoute");
+const { Basic, Create, login } = require("../controller/ControlRoute");
 const cors = require("cors");
 
 routes.use(
@@ -13,5 +13,6 @@ routes.use(
 //get the Infor
 routes.get("/", Basic);
 routes.post("/Create", Create);
+routes.post("/login", login);
 
 module.exports = routes;

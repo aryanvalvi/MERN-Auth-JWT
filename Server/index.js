@@ -17,7 +17,7 @@ app.use(express.json());
 app.use("/", require("./Routes/Auth"));
 
 //Listening
-const Port = 8000;
+const Port = 7000;
 app.listen(Port, () => {
   console.log("Server is runnign on Port", Port);
 });
